@@ -1,8 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screens/home";
-import Settings from "../screens/settings";
-import History from "../screens/history";
 import { Ionicons } from "@expo/vector-icons";
 import { View } from "react-native";
 import { vector_history } from "@/assets/svgs/vector_history";
@@ -11,6 +9,8 @@ import { vector_settings } from "@/assets/svgs/vector_settings";
 import { vector_selected_history } from "@/assets/svgs/vector_selected_history";
 import { vector_selected_home } from "@/assets/svgs/vector_selected_home";
 import { vector_selected_settings } from "@/assets/svgs/vector_selected_settings";
+import Settings from "../screens/settings";
+import History from "../screens/history";
 import { SvgXml } from "react-native-svg";
 
 const Tab = createBottomTabNavigator();
