@@ -2,15 +2,11 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { Dimensions, Keyboard } from "react-native";
 
-const useLogin = () => {
+const useSignUp = () => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const navigation: any = useNavigation();
+  const navigation = useNavigation();
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
-
-  const goSignUp = async () => {
-    navigation.navigate("SignUp");
-  };
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -28,12 +24,16 @@ const useLogin = () => {
     };
   }, []);
 
+  const handleSignUp = async () => {
+    navigation.navigate("Main" as never);
+  };
+
   return {
     windowWidth,
     windowHeight,
     isKeyboardVisible,
-    goSignUp,
+    handleSignUp,
   };
 };
 
-export default useLogin;
+export default useSignUp;
