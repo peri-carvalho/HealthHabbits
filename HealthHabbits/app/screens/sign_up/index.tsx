@@ -13,10 +13,11 @@ import { SvgXml } from "react-native-svg";
 import { LinearGradient } from "expo-linear-gradient";
 import { bg_health } from "@/assets/svgs/bg_health";
 import { icon_health } from "@/assets/svgs/icon_health";
-import useLogin from "./login.vm";
+import useSignUp from "./sign_up.vm";
 
-export default function Login() {
-  const { windowWidth, windowHeight, isKeyboardVisible, goSignUp } = useLogin();
+export default function SignUp() {
+  const { windowWidth, windowHeight, isKeyboardVisible, handleSignUp, goBack } =
+    useSignUp();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
@@ -48,7 +49,9 @@ export default function Login() {
 
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} scrollEnabled={true}>
         <KeyboardAvoidingView style={{ flex: 1, alignItems: "center" }}>
-          <View style={{ flex: 1, justifyContent: "center" }}>
+          <View
+            style={{ height: windowHeight * 0.2, justifyContent: "center" }}
+          >
             <View
               style={{
                 flexDirection: "row",
@@ -84,15 +87,26 @@ export default function Login() {
           </View>
           <View
             style={{
-              flex: 1,
+              height: windowHeight * 0.6,
               alignItems: "center",
               justifyContent: "space-between",
             }}
           >
             <Text style={{ color: "white", fontWeight: "bold", fontSize: 18 }}>
               {" "}
-              Acesse sua conta{" "}
+              Crie sua conta{" "}
             </Text>
+            <TextInput
+              placeholder="Nome"
+              placeholderTextColor="#7C7C8A"
+              style={{
+                width: 278,
+                height: 56,
+                color: "white",
+                backgroundColor: "#121214",
+                borderRadius: 6,
+              }}
+            ></TextInput>
             <TextInput
               placeholder="E-mail"
               placeholderTextColor="#7C7C8A"
@@ -115,7 +129,18 @@ export default function Login() {
                 borderRadius: 6,
               }}
             ></TextInput>
-            <TouchableOpacity onPress={() => goSignUp()}>
+            <TextInput
+              placeholder="Confirme a Senha"
+              placeholderTextColor="#7C7C8A"
+              style={{
+                width: 278,
+                height: 56,
+                color: "white",
+                backgroundColor: "#121214",
+                borderRadius: 6,
+              }}
+            ></TextInput>
+            <TouchableOpacity onPress={() => handleSignUp()}>
               <View
                 style={{
                   backgroundColor: "#2D4507",
@@ -137,23 +162,12 @@ export default function Login() {
 
           <View
             style={{
-              flex: 1,
+              height: windowHeight * 0.2,
               justifyContent: "flex-end",
               alignItems: "center",
             }}
           >
-            <Text
-              style={{
-                color: "white",
-                fontWeight: "bold",
-                fontSize: 15,
-                marginBottom: 10,
-              }}
-            >
-              Ainda não tem acesso ?
-            </Text>
-
-            <TouchableOpacity onPress={() => goSignUp()}>
+            <TouchableOpacity onPress={() => goBack()}>
               <View
                 style={{
                   backgroundColor: "black",
@@ -169,7 +183,7 @@ export default function Login() {
                 <Text
                   style={{ color: "white", fontWeight: "bold", fontSize: 15 }}
                 >
-                  Criar conta
+                  Voltar para o Login
                 </Text>
               </View>
             </TouchableOpacity>
