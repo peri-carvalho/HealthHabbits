@@ -153,7 +153,7 @@ export default function Login() {
               Ainda não tem acesso ?
             </Text>
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => goSignUp()}>
               <View
                 style={{
                   backgroundColor: "black",
