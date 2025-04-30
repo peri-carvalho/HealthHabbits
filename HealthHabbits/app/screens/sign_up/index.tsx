@@ -16,7 +16,7 @@ import { icon_health } from "@/assets/svgs/icon_health";
 import useSignUp from "./sign_up.vm";
 
 export default function SignUp() {
-  const { windowWidth, windowHeight, isKeyboardVisible, handleSignUp } =
+  const { windowWidth, windowHeight, isKeyboardVisible, handleSignUp, goBack } =
     useSignUp();
 
   return (
@@ -167,7 +167,7 @@ export default function SignUp() {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => goBack()}>
               <View
                 style={{
                   backgroundColor: "black",

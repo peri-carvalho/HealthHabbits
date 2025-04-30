@@ -28,11 +28,16 @@ const useSignUp = () => {
     navigation.navigate("Main" as never);
   };
 
+  const goBack = async () => {
+    navigation.goBack();
+  };
+
   return {
     windowWidth,
     windowHeight,
     isKeyboardVisible,
     handleSignUp,
+    goBack,
   };
 };
 
