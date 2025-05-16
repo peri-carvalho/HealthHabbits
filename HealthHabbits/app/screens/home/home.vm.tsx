@@ -1,18 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
 import { drink } from '@/assets/svgs/drink';
 import { walk } from '@/assets/svgs/walk';
 import { meditate } from '@/assets/svgs/meditate';
 import { suplements } from '@/assets/svgs/suplements';
 import { useNavigation } from '@react-navigation/native';
-
+import { getUser } from '@/app/configs/storageUser';
+import axios from 'axios';
+import { routeurl } from '@/app/configs/routeapi';
+import Toast from 'react-native-toast-message';
+import { CategoryHome } from '@/app/configs/interfaces';
+import { ActivitesHome } from '@/app/configs/interfaces';
 
 const useHome = () => {
 
   const [selectionCategory, setSelectionCategory] = useState<number>(1);
+  //const [arrayActivites, setArrayActivites] = useState<ActivitesHome[]>([])   useState de atividades
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
-  const navigation:any = useNavigation();
+  const navigation: any = useNavigation();
 
 
   const arrayCategories = [
@@ -61,7 +67,7 @@ const useHome = () => {
     }
   ]
 
-  const image_type =  (type: string) => {
+  const image_type = (type: string) => {
     switch (type) {
       case 'drink':
         return drink
@@ -72,22 +78,48 @@ const useHome = () => {
       case 'suplements':
         return suplements
       default:
-        return''
-      
+        return ''
+
     }
   }
 
-  const goLogin = async() => {
+  const goLogin = async () => {
     navigation.navigate('Login' as never);
   };
 
-  const goHabit = async() => {
+  const goHabit = async () => {
     navigation.navigate('Habit' as never);
   };
 
-  const goAchievements = async() => {
+  const goAchievements = async () => {
     navigation.navigate('Achievements' as never);
   };
+
+  useEffect(() => {
+    const searchActivitys = async () => {
+      const idUser = await getUser() // Lembrar de filtrar para pegar o id do usuário
+      searchItems(idUser)
+    }
+
+    searchActivitys()
+  }, [])
+
+
+  function searchItems(id: any) {
+    axios.get(`${routeurl}(Link da rota)/${id}/${selectionCategory}`)  // id do usuário e da categoria de pesquisa
+      .then(response => {
+        // setArrayActivites(data.response)  coloca todas as atividades no array
+      })
+
+      .catch(error => {
+        Toast.show({
+          type: 'error',
+          text1: 'Erro ao pesquisar',
+          text2:`${error}`
+        });
+
+      });
+  }
 
   return {
     windowWidth,
