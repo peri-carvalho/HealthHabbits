@@ -1,1 +1,1 @@
-export const routeurl = 'https://brasilapi.com.br/api/cep/v1/'
+export const routeurl = 'http://172.29.48.1:8080'

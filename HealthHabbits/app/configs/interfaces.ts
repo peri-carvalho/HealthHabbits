@@ -1,4 +1,4 @@
-export interface CategoryHome {
+export  interface CategoryHome {
     id: number;
     name: string;
 }

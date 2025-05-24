@@ -40,44 +40,48 @@ const useLogin = () => {
 
   const schema = Yup.object().shape({
     email: Yup.string().email('E-mail inválido').required('E-mail obrigatório'),
-    senha: Yup.string().min(6, 'Mínimo 6 caracteres').required('Senha obrigatória'),
+    senha: Yup.string().min(8, 'Mínimo 8 caracteres').required('Senha obrigatória'),
   });
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: { email: string; senha: string }) => {
     console.log(data);
-    login('69078510')
+    login('auth/login', data.email, data.senha)
     setIsDisabled(true)
   };
 
-  function login(endpoint: string) {
-    axios.get(`${routeurl}/${endpoint}`)
-      .then(response => {
-        console.log(response.data) // esse data vai ter as informações que tu vai querer enviar
-        storeUser(response.data)
-        Toast.show({
-          type: 'success',
-          text1: 'Sucesso',
-          text2: 'Usuário Logado 👋'
-        });
-        navigation.navigate('SignUp');
-        setIsDisabled(false)
-      })
+  async function login(endpoint: string, email: string, senha: string) {
+    try {
+      setIsDisabled(true);
 
-      .catch(error => {
-        Toast.show({
-          type: 'error',
-          text1: 'Usuário não encontrado',
-          text2: 'Favor verique as informações enviadas 🚫'
-        });
-        setIsDisabled(false)
-
+      const response = await axios.post(`${routeurl}/${endpoint}`, {
+        email,
+        senha
       });
-  }
 
+      console.log(response.data);
+      storeUser(response.data);
+
+      Toast.show({
+        type: 'success',
+        text1: 'Sucesso',
+        text2: 'Usuário Logado 👋'
+      });
+
+      navigation.navigate('Home');
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: 'Falha no Login',
+        text2: error.response?.data?.message || 'Verifique suas credenciais 🚫'
+      });
+    } finally {
+      setIsDisabled(false);
+    }
+  }
 
 
   return {

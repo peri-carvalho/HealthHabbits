@@ -4,7 +4,7 @@ import Home from '../screens/home';
 import Settings from '../screens/settings';
 import History from '../screens/history';
 import Habit from '../screens/habit';
-import <Achievements></Achievements> from '../screens/achievements';
+import Achievements from '../screens/achievements';
 import { View } from 'react-native';
 import { vector_history } from '@/assets/svgs/vector_history';
 import { vector_home } from '@/assets/svgs/vector_home';
@@ -14,6 +14,7 @@ import { vector_selected_home } from '@/assets/svgs/vector_selected_home';
 import { vector_selected_settings } from '@/assets/svgs/vector_selected_settings';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SvgXml } from 'react-native-svg';
+
 
 const Tab = createBottomTabNavigator();
 
