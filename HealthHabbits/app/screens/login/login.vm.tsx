@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { Dimensions, Keyboard } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -40,29 +40,29 @@ const useLogin = () => {
 
   const schema = Yup.object().shape({
     email: Yup.string().email('E-mail inválido').required('E-mail obrigatório'),
-    senha: Yup.string().min(8, 'Mínimo 8 caracteres').required('Senha obrigatória'),
+    password: Yup.string().min(8, 'Mínimo 12 caracteres sendo 1 especial').required('Senha obrigatória'),
   });
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: { email: string; senha: string }) => {
-    console.log(data);
-    login('auth/login', data.email, data.senha)
+  const onSubmit = (data: { email: string; password: string }) => {
+    // console.log(data);
+    login('auth/login', data.email, data.password)
     setIsDisabled(true)
   };
 
-  async function login(endpoint: string, email: string, senha: string) {
+  async function login(endpoint: string, email: string, password: string) {
     try {
       setIsDisabled(true);
 
       const response = await axios.post(`${routeurl}/${endpoint}`, {
         email,
-        senha
+        password
       });
 
-      console.log(response.data);
+      // console.log(response.data);
       storeUser(response.data);
 
       Toast.show({
@@ -71,7 +71,7 @@ const useLogin = () => {
         text2: 'Usuário Logado 👋'
       });
 
-      navigation.navigate('Home');
+      navigation.navigate('Main');
     } catch (error: any) {
       Toast.show({
         type: 'error',

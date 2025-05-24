@@ -73,7 +73,7 @@ export default function Login() {
                         {errors.email && <Text style={{ color: 'red' }}>{errors.email.message}</Text>}
                         <Controller
                             control={control}
-                            name="senha"
+                            name="password"
                             render={({ field: { onChange, value } }) => (
                                 <TextInput
                                     placeholder="Senha"
@@ -85,7 +85,7 @@ export default function Login() {
                                 />
                             )}
                         />
-                        {errors.senha && <Text style={{ color: 'red' }}>{errors.senha.message}</Text>}
+                        {errors.password && <Text style={{ color: 'red' }}>{errors.password.message}</Text>}
                         <TouchableOpacity disabled={isDisabled} onPress={handleSubmit(onSubmit)}>
                             <View style={{ backgroundColor: '#2D4507', justifyContent: 'center', alignItems: 'center', width: 278, height: 56, borderRadius: 6 }}>
                                 {isDisabled?
