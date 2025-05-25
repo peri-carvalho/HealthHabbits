@@ -9,7 +9,12 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -17,6 +22,10 @@
         "backgroundColor": "#ffffff"
       }
     },
+    "usesCleartextTraffic": true,
+    "permissions": [
+      "INTERNET"
+    ],
     "web": {
       "bundler": "metro",
       "output": "static",

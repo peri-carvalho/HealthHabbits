@@ -11,9 +11,17 @@ import { routeurl } from '@/app/configs/routeapi';
 import Toast from 'react-native-toast-message';
 import { CategoryHome } from '@/app/configs/interfaces';
 import { ActivitesHome } from '@/app/configs/interfaces';
+import { jwtDecode } from "jwt-decode";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+interface JwtPayload {
+  sub: string;
+  name: string;
+  email: string;
+}
 
 const useHome = () => {
-
+  const [userName, setUserName] = useState<string>('Usuário');
   const [selectionCategory, setSelectionCategory] = useState<number>(1);
   //const [arrayActivites, setArrayActivites] = useState<ActivitesHome[]>([])   useState de atividades
   const windowWidth = Dimensions.get('window').width;
@@ -104,9 +112,22 @@ const useHome = () => {
     searchActivitys()
   }, [])
 
+  useEffect(() => {
+    (async () => {
+      const token = await AsyncStorage.getItem('@userToken');
+      if (token) {
+        try {
+          const payload = jwtDecode<JwtPayload>(token);
+          setUserName(payload.name);
+        } catch {
+          // token inválido → mantém "Usuário"
+        }
+      }
+    })();
+  }, []);
 
   function searchItems(id: any) {
-    axios.get(`${routeurl}(Link da rota)/${id}/${selectionCategory}`)  // id do usuário e da categoria de pesquisa
+    axios.get(`${routeurl}/${id}/${selectionCategory}`)  // id do usuário e da categoria de pesquisa
       .then(response => {
         // setArrayActivites(data.response)  coloca todas as atividades no array
       })
@@ -122,6 +143,7 @@ const useHome = () => {
   }
 
   return {
+    userName,
     windowWidth,
     windowHeight,
     arrayCategories,

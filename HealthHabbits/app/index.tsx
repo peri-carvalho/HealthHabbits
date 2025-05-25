@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import AppScreens from './navigation';
-import { setupAxiosInterceptors } from '@/app/configs/auth';
+import Toast from 'react-native-toast-message';
 
 export default function App() {
-  useEffect(() => {
-    setupAxiosInterceptors();
-  }, []);
 
   return (
+    <>
       <AppScreens />
+      <Toast />
+    </>
   );
 }

@@ -49,7 +49,7 @@ const useLogin = () => {
   });
 
   const onSubmit = (data: { email: string; password: string }) => {
-    // console.log(data);
+    console.log(data);
     login('auth/login', data.email, data.password)
     setIsDisabled(true)
   };
@@ -64,7 +64,7 @@ const useLogin = () => {
       });
 
       const { token, refreshToken } = response.data.tokenResponse;
-      // console.log(response.data);
+      console.log(response.data);
       storeUser(response.data);
 
       await AsyncStorage.multiSet([
@@ -82,6 +82,7 @@ const useLogin = () => {
 
       navigation.navigate('Main');
     } catch (error: any) {
+      alert(error);
       Toast.show({
         type: 'error',
         text1: 'Falha no Login',

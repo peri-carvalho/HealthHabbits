@@ -7,7 +7,7 @@ import { SvgXml } from 'react-native-svg';
 
 export default function Home() {
 
-    const { windowHeight, windowWidth, arrayCategories, selectionCategory, setSelectionCategory, arrayActivites, image_type, goLogin, goHabit, goAchievements } = useHome()
+    const { windowHeight, windowWidth, arrayCategories, selectionCategory, setSelectionCategory, arrayActivites, image_type, goLogin, goHabit, goAchievements,userName } = useHome()
     return (
         <View style={{ flex: 1, backgroundColor: '#121214' }}>
             <View style={{ height: windowHeight * 0.15, backgroundColor: '#202024', alignItems: 'center', justifyContent: 'center' }}>
@@ -17,9 +17,9 @@ export default function Home() {
                             <MaterialIcons name="account-circle" size={44} color="white" />
                         </View>
                         <View style={{ marginLeft: 15, justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection: 'column' }}>
-                            <Text style={{ fontSize: 17, color: 'white' }}>Olá,</Text>
+                            <Text style={{ fontSize: 17, color: 'white' }}>Olá, {userName}</Text>
                             <TouchableOpacity onPress={()=> goAchievements()}>
-                                <Text style={{ fontSize: 17, color: 'white', fontWeight: '500' }}>Novo Usuário</Text>
+                                <Text style={{ fontSize: 17, color: 'white', fontWeight: '500' }}>Conquistas</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
