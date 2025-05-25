@@ -8,6 +8,7 @@ import axios from 'axios';
 import { routeurl } from '@/app/configs/routeapi';
 import Toast from 'react-native-toast-message';
 import { storeUser } from '@/app/configs/storageUser';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const useLogin = () => {
 
@@ -40,7 +41,7 @@ const useLogin = () => {
 
   const schema = Yup.object().shape({
     email: Yup.string().email('E-mail inválido').required('E-mail obrigatório'),
-    password: Yup.string().min(8, 'Mínimo 12 caracteres sendo 1 especial').required('Senha obrigatória'),
+    password: Yup.string().min(12, 'Mínimo 12 caracteres sendo 1 especial').required('Senha obrigatória'),
   });
 
   const { control, handleSubmit, formState: { errors } } = useForm({
@@ -62,8 +63,16 @@ const useLogin = () => {
         password
       });
 
+      const { token, refreshToken } = response.data.tokenResponse;
       // console.log(response.data);
       storeUser(response.data);
+
+      await AsyncStorage.multiSet([
+        ['@userToken', token],
+        ['@refreshToken', refreshToken],
+      ]);
+
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       Toast.show({
         type: 'success',

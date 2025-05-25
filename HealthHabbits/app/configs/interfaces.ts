@@ -9,3 +9,10 @@ export interface ActivitesHome {
     name: string
     objectives: string
 }
+
+export interface SignUpForm {
+    email: string;
+    name: string;
+    password: string;
+    confirmPassword: string;
+}

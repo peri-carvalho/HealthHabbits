@@ -59,7 +59,7 @@ export default function SignUp() {
                         <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}> Crie sua conta </Text>
                         <Controller
                             control={control}
-                            name="nome"
+                            name="name"
                             render={({ field: { onChange, value } }) => (
                                 <TextInput
                                     placeholder="Nome"
@@ -70,7 +70,7 @@ export default function SignUp() {
                                 />
                             )}
                         />
-                        {errors.nome && <Text style={{ color: 'red' }}>{errors.nome.message}</Text>}
+                        {errors.name && <Text style={{ color: 'red' }}>{errors.name.message}</Text>}
                         <Controller
                             control={control}
                             name="email"
@@ -89,7 +89,7 @@ export default function SignUp() {
                         {errors.email && <Text style={{ color: 'red' }}>{errors.email.message}</Text>}
                         <Controller
                             control={control}
-                            name="senha"
+                            name="password"
                             render={({ field: { onChange, value } }) => (
                                 <TextInput
                                     placeholder="Senha"
@@ -101,10 +101,10 @@ export default function SignUp() {
                                 />
                             )}
                         />
-                        {errors.senha && <Text style={{ color: 'red' }}>{errors.senha.message}</Text>}
+                        {errors.password && <Text style={{ color: 'red' }}>{errors.password.message}</Text>}
                         <Controller
                             control={control}
-                            name="confirmarSenha"
+                            name="confirmPassword"
                             render={({ field: { onChange, value } }) => (
                                 <TextInput
                                     placeholder="Confirme a Senha"
@@ -116,7 +116,7 @@ export default function SignUp() {
                                 />
                             )}
                         />
-                        {errors.confirmarSenha && <Text style={{ color: 'red' }}>{errors.confirmarSenha.message}</Text>}
+                        {errors.confirmPassword && <Text style={{ color: 'red' }}>{errors.confirmPassword.message}</Text>}
                         <TouchableOpacity disabled={isDisabled} onPress={handleSubmit(onSubmit)}>
                             <View style={{ backgroundColor: '#2D4507', justifyContent: 'center', alignItems: 'center', width: 278, height: 56, borderRadius: 6 }}>
                                 {isDisabled ?

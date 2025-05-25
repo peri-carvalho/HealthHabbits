@@ -1,35 +1,28 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { Dimensions, Keyboard } from 'react-native';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { routeurl } from '@/app/configs/routeapi';
 import Toast from 'react-native-toast-message';
 import { storeUser } from '@/app/configs/storageUser';
+import { SignUpForm } from '@/app/configs/interfaces';
 
 const useSignUp = () => {
-
+  const navigation = useNavigation<any>();
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const navigation = useNavigation();
+  const [isDisabled, setIsDisabled] = useState(false);
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
-  const [isDisabled, setIsDisabled] = useState<boolean>(false)
 
   useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => setKeyboardVisible(true)
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => setKeyboardVisible(false)
-    );
-
+    const show = Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
+    const hide = Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
     return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
+      show.remove();
+      hide.remove();
     };
   }, []);
 
@@ -38,62 +31,63 @@ const useSignUp = () => {
   };
 
   const schema = Yup.object().shape({
-    nome: Yup.string().required('Nome é obrigatório'),
     email: Yup.string().email('Email inválido').required('Email é obrigatório'),
-    senha: Yup.string().min(6, 'A senha deve ter pelo menos 6 caracteres').required('Senha é obrigatória'),
-    confirmarSenha: Yup.string()
-      .oneOf([Yup.ref('senha')], 'As senhas não coincidem')
-      .required('Confirmação de senha é obrigatória')
+    name: Yup.string().required('Nome é obrigatório'),
+    password: Yup.string().min(12, 'Mínimo 12 caracteres sendo 1 especial').required(),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password')], 'As senhas não coincidem')
+      .required('Confirmação de senha é obrigatória'),
   });
 
-  const {
-    control, handleSubmit, formState: { errors } } = useForm({
-      resolver: yupResolver(schema),
-    });
+  const { control, handleSubmit, formState: { errors } } = useForm<SignUpForm>({
+    resolver: yupResolver(schema),
+  });
 
-
-
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: SignUpForm) => {
+    registerUser(data);
     console.log(data);
-    singUp('69078510')
-    setIsDisabled(true)
   };
 
-  function singUp(endpoint: string) {
-    axios.get(`${routeurl}/${endpoint}`)
-      .then(response => {
-        console.log(response.data) // esse data vai ter as informações que tu vai querer enviar
-        storeUser(response.data)
-        Toast.show({
-          type: 'success',
-          text1: 'Sucesso',
-          text2: 'Usuário Logado 👋'
-        });
-        navigation.navigate('Main' as never);
-        setIsDisabled(false)
-      })
+  const registerUser = async (data: SignUpForm) => {
+    setIsDisabled(true);
+    try {
+      const body = {
+        email: data.email,
+        name: data.name,
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+        profileId: 1,
+      };
+      console.log(body);
+      const res = await axios.post(`${routeurl}/auth/register`, body);
 
-      .catch(error => {
-        Toast.show({
-          type: 'error',
-          text1: 'Usuário não encontrado',
-          text2: 'Favor verique as informações enviadas 🚫'
-        });
-        setIsDisabled(false)
+      Toast.show({
+        type: 'success',
+        text1: 'Cadastro realizado',
+        text2: 'Você já pode logar 😊'
       });
-  }
-
+      navigation.navigate('Login');
+    } catch (err: any) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro no cadastro',
+        text2: err.response?.data?.message || 'Verifique suas informações 🚫'
+      });
+    } finally {
+      setIsDisabled(false);
+    }
+  };
 
   return {
     windowWidth,
     windowHeight,
     isKeyboardVisible,
-    onSubmit,
     goBack,
+    isDisabled,
     control,
     handleSubmit,
-    errors,
-    isDisabled
+    onSubmit,
+    errors
   };
 };
 
